@@ -1,21 +1,23 @@
 package org.example;
 
+import org.example.enums.FilterEnum;
+import org.example.enums.FunctionEnum;
+import org.example.enums.GenerateEnum;
 import org.example.util.CollectorUtil;
-import org.example.util.StringBuild;
+import org.example.util.OperationFactory;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Integer> arrayList=new ArrayList<>(CollectorUtil.fillValues(()->new Random().nextInt(2,20),10));
-        ArrayList<String> stringArrayList=new ArrayList<>(CollectorUtil.fillValues(()-> StringBuild.cadenaAleatoria(3),10));
-        ArrayList<Integer> nuevalista1=new ArrayList<>(CollectorUtil.transform(value->value*value,arrayList));
-        ArrayList<Integer> nuevalista=new ArrayList<>(CollectorUtil.transformValues(value->value*value,arrayList));
-        System.out.println(nuevalista);
-        ArrayList<Integer> filtrando=new ArrayList<>(CollectorUtil.filter(arrayList,value->value>10));
+        ArrayList<Integer> arrayList=new ArrayList<Integer>(CollectorUtil.fillValues(OperationFactory.getGeneratorOperation(GenerateEnum.GENERATE_NUMBER).generate(),10));
+        ArrayList<String> stringArrayList=new ArrayList<String>(CollectorUtil.fillValues(OperationFactory.getGeneratorOperation(GenerateEnum.GENERATE_STRING).generate(),10));
+        ArrayList<Integer> listaSquare=new ArrayList<>(CollectorUtil.transform(x->x*=x,arrayList));
+        System.out.println(listaSquare);
+        ArrayList<Integer> filtrando=new ArrayList<>(CollectorUtil.filter(arrayList,x->OperationFactory.getPredicateOperation(FilterEnum.UPTEN_FILTER).test(x)));
+        ArrayList<String> stringsFiltered=new ArrayList<>(CollectorUtil.filter(stringArrayList,x->OperationFactory.getPredicateOperation(FilterEnum.NBEGIN_FILTER).test(x)));
         Integer sis=CollectorUtil.reduce(arrayList,(value1,value2)->value1+value2);
-        System.out.println(arrayList);
+        System.out.println(filtrando);
         System.out.println(sis);
 
     }

@@ -23,21 +23,20 @@ public class CollectorUtil {
     }
 
     public static <T,R> List<R> transform(Function<T,R> function,List<T> values){
-        return values.stream().map(function).collect(Collectors.toList());
+        return values.stream().map(function::apply).collect(Collectors.toList());
     }
 
     public static <T> void print(List<T> values, Consumer<T> consumer){
-        values.forEach(consumer);
+        values.forEach(consumer::accept);
     }
 
     public static <T> List<T> filter(List<T> values, Predicate<T> predicate){
-        return values.stream().filter(predicate).collect(Collectors.toList());
+        return values.stream().filter(predicate::test).collect(Collectors.toList());
     }
 
     public static <T> T reduce(List<T> values, BinaryOperator<T> binaryOperator){
-        return values.stream().reduce(binaryOperator).get();
+        return values.stream().reduce(binaryOperator::apply).get();
     }
-
 
 
 
